@@ -32,13 +32,13 @@ percentageLabel.grid(row=1, column=1)
 votesLabel = Label(root, text="Votes")
 votesLabel.grid(row=1, column=2)
 
-textList = Entry(root)
+textList = Entry(root, width=20, justify=CENTER)
 textList.grid(row=2, column=0, padx=5)
 
-textPercentage = Entry(root)
+textPercentage = Entry(root, width=5, justify=CENTER)
 textPercentage.grid(row=2, column=1, padx=5)
 
-textVotes = Entry(root)
+textVotes = Entry(root, width=5, justify=CENTER)
 textVotes.grid(row=2, column=2, padx=5)
 
 b1 = Button(root, text="Submit", command=submit)
