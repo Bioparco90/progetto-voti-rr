@@ -17,11 +17,10 @@ root.geometry("800x600+0+0")
 # For path issues, just add an 'r' before "". Ex: root.iconbitmap(r"fb.ico") 
 # root.iconbitmap("fb.ico")
 
-# *-------------------------------------------------------------------------------*
-# *----------------------------------HEADER---------------------------------------*
-# * welcome = Label(root, text="Votes Analyzer", font="Helvetica 20 bold", pady=5)*
-# * welcome.grid(row=0, column=2)                                                 *
-# *-------------------------------------------------------------------------------*
+welcomeFrame = Frame(root)
+header = Label(welcomeFrame, text="Votes Analyzer", font="Helvetica 20 bold", pady=5)
+welcomeFrame.grid(row=0, column=4)
+header.grid(row=0, column=0)
 
 listNameLabel = Label(root, text="List")
 listNameLabel.grid(row=1, column=0)
@@ -43,5 +42,7 @@ textVotes.grid(row=2, column=2, padx=5)
 
 b1 = Button(root, text="Submit", command=submit)
 b1.grid(row=2, column=3)
+
+
 
 root.mainloop()
