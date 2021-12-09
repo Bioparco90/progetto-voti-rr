@@ -43,11 +43,13 @@ def newLine():
     textVotes[lastVotes].insert(0, "0")
     textVotes[lastVotes].grid(row=rowCounter, column=2, padx=5)
 
-    addButton = Button(root, text="+", command=addNewLine)
+    addButton = Button(root, text="+", command=lambda: addNewLine(addButton))
     addButton.grid(row=rowCounter, column=3)
 
-def addNewLine():
+
+def addNewLine(b):
     global rowCounter
+    b.grid_forget()
     rowCounter += 1
     newLine()
 
