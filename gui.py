@@ -59,7 +59,6 @@ root = Tk()
 
 root.title("Votes Analyzer RR")
 root.geometry("800x600+0+0")
-root.iconbitmap("elections2.ico")
 
 header()
 columnNames()
