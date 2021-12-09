@@ -1,7 +1,7 @@
 from tkinter import *
 from votesFunctions import *
 
-count = 2
+rowCounter = 2
 textList = []
 textPercentage = []
 textVotes = []
@@ -25,27 +25,28 @@ def columnNames():
 
 
 def newLine():
-    global count
+    placeholder = f"Lista #{rowCounter-1}"
 
     lastList = len(textList)
     lastPercentage = len(textPercentage)
     lastVotes = len(textVotes)
 
     textList.append(Entry(root, width=20, justify=CENTER))
-    textList[lastList].grid(row=count, column=0, padx=5)
+    textList[lastList].insert(0, placeholder)
+    textList[lastList].grid(row=rowCounter, column=0, padx=5)
 
     textPercentage.append(Entry(root, width=5, justify=CENTER))
-    textPercentage[lastPercentage].grid(row=count, column=1, padx=5)
+    textPercentage[lastPercentage].grid(row=rowCounter, column=1, padx=5)
 
     textVotes.append(Entry(root, width=5, justify=CENTER))
-    textVotes[lastVotes].grid(row=count, column=2, padx=5)
+    textVotes[lastVotes].grid(row=rowCounter, column=2, padx=5)
 
     addButton = Button(root, text="+", command=addNewLine)
-    addButton.grid(row=count, column=3)
+    addButton.grid(row=rowCounter, column=3)
 
 def addNewLine():
-    global count
-    count += 1
+    global rowCounter
+    rowCounter += 1
     newLine()
 
 
