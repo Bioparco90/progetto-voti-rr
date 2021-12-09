@@ -36,9 +36,11 @@ def newLine():
     textList[lastList].grid(row=rowCounter, column=0, padx=5)
 
     textPercentage.append(Entry(root, width=5, justify=CENTER))
+    textPercentage[lastPercentage].insert(0, "0.0")
     textPercentage[lastPercentage].grid(row=rowCounter, column=1, padx=5)
 
     textVotes.append(Entry(root, width=5, justify=CENTER))
+    textVotes[lastVotes].insert(0, "0")
     textVotes[lastVotes].grid(row=rowCounter, column=2, padx=5)
 
     addButton = Button(root, text="+", command=addNewLine)
