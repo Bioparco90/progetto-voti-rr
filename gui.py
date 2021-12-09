@@ -59,10 +59,7 @@ root = Tk()
 
 root.title("Votes Analyzer RR")
 root.geometry("800x600+0+0")
-
-# Have to choose an icon, this is the facebook's icon. 
-# For path issues, just add an 'r' before "". Ex: root.iconbitmap(r"fb.ico") 
-# root.iconbitmap("fb.ico")
+root.iconbitmap("elections2.ico")
 
 header()
 columnNames()
