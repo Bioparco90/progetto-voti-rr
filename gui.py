@@ -1,7 +1,10 @@
 from tkinter import *
 from votesFunctions import *
 
-count = 1
+count = 2
+textList = []
+textPercentage = []
+textVotes = []
 
 def header():
     welcomeFrame = Frame(root)
@@ -21,36 +24,29 @@ def columnNames():
     votesLabel.grid(row=1, column=2)
 
 
-def start():
-    textList = Entry(root, width=20, justify=CENTER)
-    textList.grid(row=2, column=0, padx=5)
-
-    textPercentage = Entry(root, width=5, justify=CENTER)
-    textPercentage.grid(row=2, column=1, padx=5)
-
-    textVotes = Entry(root, width=5, justify=CENTER)
-    textVotes.grid(row=2, column=2, padx=5)
-
-    addButton = Button(root, text="+", command=addNewList)
-    addButton.grid(row=2, column=3)
-
-
-def addNewList():
+def newLine():
     global count
 
-    textList = Entry(root, width=20, justify=CENTER)
-    textList.grid(row=2+count, column=0, padx=5)
+    lastList = len(textList)
+    lastPercentage = len(textPercentage)
+    lastVotes = len(textVotes)
 
-    textPercentage = Entry(root, width=5, justify=CENTER)
-    textPercentage.grid(row=2+count, column=1, padx=5)
+    textList.append(Entry(root, width=20, justify=CENTER))
+    textList[lastList].grid(row=count, column=0, padx=5)
 
-    textVotes = Entry(root, width=5, justify=CENTER)
-    textVotes.grid(row=2+count, column=2, padx=5)
+    textPercentage.append(Entry(root, width=5, justify=CENTER))
+    textPercentage[lastPercentage].grid(row=count, column=1, padx=5)
 
-    b = Button(root, text="+", command=addNewList)
-    b.grid(row=2+count, column=3)
-    
+    textVotes.append(Entry(root, width=5, justify=CENTER))
+    textVotes[lastVotes].grid(row=count, column=2, padx=5)
+
+    addButton = Button(root, text="+", command=addNewLine)
+    addButton.grid(row=count, column=3)
+
+def addNewLine():
+    global count
     count += 1
+    newLine()
 
 
 root = Tk()
@@ -62,9 +58,8 @@ root.geometry("800x600+0+0")
 # For path issues, just add an 'r' before "". Ex: root.iconbitmap(r"fb.ico") 
 # root.iconbitmap("fb.ico")
 
-
 header()
 columnNames()
-start()
+newLine()
 
 root.mainloop()
