@@ -33,6 +33,7 @@ def newLine():
 
     textList.append(Entry(root, width=20, justify=CENTER))
     textList[lastList].insert(0, placeholder)
+    textList[lastList].focus_set()
     textList[lastList].grid(row=rowCounter, column=0, padx=5)
 
     textPercentage.append(Entry(root, width=5, justify=CENTER))
