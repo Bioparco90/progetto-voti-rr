@@ -70,7 +70,7 @@ def check(b, s):
     for n in textPercentage:
         totalPercentage += float(n.get())
 
-    warningMessage = f'Warning, the total percentage is {totalPercentage}, please check and try again'
+    warningMessage = f'Warning, the total percentage is {totalPercentage}, please check and'
 
     if totalPercentage != 100:
         resultsFrame = Frame(root)
