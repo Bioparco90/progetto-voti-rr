@@ -44,15 +44,26 @@ def newLine():
     textVotes[lastVotes].insert(0, "0")
     textVotes[lastVotes].grid(row=rowCounter, column=2, padx=5)
 
-    addButton = Button(root, text="+", command=lambda: addNewLine(addButton))
+    addButton = Button(root, text="+", command=lambda: addNewLine(addButton, submitButton))
     addButton.grid(row=rowCounter, column=3)
+    
+    submitButton = Button(root, text="Submit", command=lambda: submit(addButton, submitButton))
+    submitButton.grid(row=rowCounter+1, column=3)
 
 
-def addNewLine(b):
+def addNewLine(b, s):
     global rowCounter
     b.grid_forget()
+    s.grid_forget()
     rowCounter += 1
     newLine()
+
+
+def submit(b, s):
+    b.grid_forget()
+    s.grid_forget()
+    resultsFrame = Frame(root, border=2, height=100, width=50)
+    resultsFrame.grid(row=rowCounter+1, column=0, columnspan=4)
 
 
 root = Tk()
