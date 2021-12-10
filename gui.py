@@ -62,8 +62,39 @@ def addNewLine(b, s):
 def submit(b, s):
     b.grid_forget()
     s.grid_forget()
-    resultsFrame = Frame(root, border=2, height=100, width=50)
-    resultsFrame.grid(row=rowCounter+1, column=0, columnspan=4)
+    check(b, s)
+
+def check(b, s):
+    totalPercentage = 0
+    
+    for n in textPercentage:
+        totalPercentage += float(n.get())
+
+    warningMessage = f'Warning, the total percentage is {totalPercentage}, please check and try again'
+
+    if totalPercentage != 100:
+        resultsFrame = Frame(root)
+        resultsFrame.grid(row=rowCounter+1, column=4)
+        warning = Label(resultsFrame, text=warningMessage)
+        warning.grid(row=0, column=0)
+        
+        retryButton = Button(resultsFrame, text="try again", command=lambda: tryAgain())
+        retryButton.grid(row=0, column=1)
+    # print(totalPercentage) #debug print
+
+def tryAgain():
+    global rowCounter, textList, textPercentage, textVotes
+    
+    for widget in root.winfo_children():
+        widget.destroy()
+    
+    rowCounter = 2
+    textList = []
+    textPercentage = []
+    textVotes = []
+    header()
+    columnNames()
+    newLine()
 
 
 root = Tk()
