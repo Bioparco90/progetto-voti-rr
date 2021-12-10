@@ -5,6 +5,7 @@ rowCounter = 2
 textList = []
 textPercentage = []
 textVotes = []
+allDataFromUser = []
 
 def header():
     welcomeFrame = Frame(root)
@@ -63,6 +64,12 @@ def submit(b, s):
     b.grid_forget()
     s.grid_forget()
     check()
+    global allDataFromUser
+    for n in range(len(textList)):
+        allDataFromUser.append([textList[n].get(), float(textPercentage[n].get()), int(textVotes[n].get())])
+
+    # print(allDataFromUser) #debug print
+    
 
 def check():
     totalPercentage = 0
@@ -80,10 +87,12 @@ def check():
         
         retryButton = Button(resultsFrame, text="try again", command=lambda: tryAgain())
         retryButton.grid(row=0, column=1)
+
     # print(totalPercentage) #debug print
 
+
 def tryAgain():
-    global rowCounter, textList, textPercentage, textVotes
+    global rowCounter, textList, textPercentage, textVotes, allDataFromUser
     
     for widget in root.winfo_children():
         widget.destroy()
@@ -92,6 +101,7 @@ def tryAgain():
     textList = []
     textPercentage = []
     textVotes = []
+    allDataFromUser = []
     header()
     columnNames()
     newLine()
@@ -105,5 +115,7 @@ root.geometry("800x600+0+0")
 header()
 columnNames()
 newLine()
+# for n in textList:
+#     print(n.get())
 
 root.mainloop()
