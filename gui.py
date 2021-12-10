@@ -44,14 +44,56 @@ def newLine():
     textVotes[lastVotes].insert(0, "0")
     textVotes[lastVotes].grid(row=rowCounter, column=2, padx=5)
 
-    addButton = Button(root, text="+", command=lambda: addNewLine(addButton))
+    addButton = Button(root, text="+", command=lambda: addNewLine(addButton, submitButton))
     addButton.grid(row=rowCounter, column=3)
+    
+    submitButton = Button(root, text="Submit", command=lambda: submit(addButton, submitButton))
+    submitButton.grid(row=rowCounter+1, column=3)
 
 
-def addNewLine(b):
+def addNewLine(b, s):
     global rowCounter
     b.grid_forget()
+    s.grid_forget()
     rowCounter += 1
+    newLine()
+
+
+def submit(b, s):
+    b.grid_forget()
+    s.grid_forget()
+    check(b, s)
+
+def check(b, s):
+    totalPercentage = 0
+    
+    for n in textPercentage:
+        totalPercentage += float(n.get())
+
+    warningMessage = f'Warning, the total percentage is {totalPercentage}, please check and try again'
+
+    if totalPercentage != 100:
+        resultsFrame = Frame(root)
+        resultsFrame.grid(row=rowCounter+1, column=4)
+        warning = Label(resultsFrame, text=warningMessage)
+        warning.grid(row=0, column=0)
+        
+        retryButton = Button(resultsFrame, text="try again", command=lambda: tryAgain())
+        retryButton.grid(row=0, column=1)
+    # print(totalPercentage) #debug print
+
+def tryAgain():
+    global rowCounter, textList, textPercentage, textVotes
+    
+    for widget in root.winfo_children():
+        widget.destroy()
+    
+    rowCounter = 2
+    textList = []
+    textPercentage = []
+    textVotes = []
+    header()
+    columnNames()
     newLine()
 
 
