@@ -62,9 +62,9 @@ def addNewLine(b, s):
 def submit(b, s):
     b.grid_forget()
     s.grid_forget()
-    check(b, s)
+    check()
 
-def check(b, s):
+def check():
     totalPercentage = 0
     
     for n in textPercentage:
