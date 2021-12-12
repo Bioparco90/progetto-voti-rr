@@ -18,55 +18,55 @@ singleSeat = 0
 #     header.grid(row=0, column=0, sticky="W")
 
 
-def columnNames():
-    listNameLabel = Label(root, text="Lista")
-    listNameLabel.grid(row=0, column=0)
+def columnNames(myFrame):
+    listNameLabel = Label(myFrame, text="Lista")
+    listNameLabel.grid(row=0, column=0, sticky="W")
 
-    percentageLabel = Label(root, text="%")
-    percentageLabel.grid(row=0, column=1)
+    percentageLabel = Label(myFrame, text="%")
+    percentageLabel.grid(row=0, column=1, sticky="W")
 
-    votesLabel = Label(root, text="Voti")
-    votesLabel.grid(row=0, column=2)
+    votesLabel = Label(myFrame, text="Voti")
+    votesLabel.grid(row=0, column=2, sticky="W")
 
 
-def newLine():
+def newLine(frame):
     placeholder = f"Lista #{rowCounter-1}"
 
     lastList = len(textList)
     lastPercentage = len(textPercentage)
     lastVotes = len(textVotes)
 
-    textList.append(Entry(root, width=20, justify=CENTER))
+    textList.append(Entry(frame, width=20, justify=CENTER))
     textList[lastList].insert(0, placeholder)
     textList[lastList].focus_set()
-    textList[lastList].grid(row=rowCounter, column=0, padx=5)
+    textList[lastList].grid(row=rowCounter, column=0, sticky="W", padx=5)
 
-    textPercentage.append(Entry(root, width=5, justify=CENTER))
+    textPercentage.append(Entry(frame, width=5, justify=CENTER))
     textPercentage[lastPercentage].insert(0, "0.0")
-    textPercentage[lastPercentage].grid(row=rowCounter, column=1, padx=5)
+    textPercentage[lastPercentage].grid(row=rowCounter, column=1, sticky="W", padx=5)
 
-    textVotes.append(Entry(root, width=5, justify=CENTER))
+    textVotes.append(Entry(frame, width=5, justify=CENTER))
     textVotes[lastVotes].insert(0, "0")
-    textVotes[lastVotes].grid(row=rowCounter, column=2, padx=5)
+    textVotes[lastVotes].grid(row=rowCounter, column=2, sticky="W", padx=5)
 
     hiddenRemains.append(0)
 
-    addButton = Button(root, text="+", command=lambda: addNewLine(addButton, submitButton))
+    addButton = Button(frame, text="+", command=lambda: addNewLine(addButton, submitButton, frame))
     addButton.grid(row=rowCounter, column=3, sticky="W")
     
-    submitButton = Button(root, text="Calcola", command=lambda: submit(addButton, submitButton))
+    submitButton = Button(frame, text="Calcola", command=lambda: submit(addButton, submitButton, frame))
     submitButton.grid(row=rowCounter+1, column=3, sticky="W")
 
 
-def addNewLine(b, s):
+def addNewLine(b, s, frame):
     global rowCounter
     b.grid_forget()
     s.grid_forget()
     rowCounter += 1
-    newLine()
+    newLine(frame)
 
 
-def submit(b, s):
+def submit(b, s, frame):
     b.grid_forget()
     s.grid_forget()
 
@@ -95,16 +95,16 @@ def submit(b, s):
     else:
         if allDataFromUser[0][2] == 0:
             warningMessage = "Inserisci per primo il partito di cui conosci i voti e "
-            errorFrame(warningMessage)
+            errorFrame(warningMessage, frame)
         elif totalPercentage != 100:
             warningMessage = f'Attenzione, la percentuale totale è {totalPercentage}, controlla e '
-            errorFrame(warningMessage)
+            errorFrame(warningMessage, frame)
         elif amountList == 0 or average == 0:
             warningMessage = "Inserisci il totale dei voti di almeno un partito e"
-            errorFrame(warningMessage) 
+            errorFrame(warningMessage, frame) 
 
 
-def errorFrame(message):
+def errorFrame(message, frame):
         checkResultsFrame = Frame(root)
         checkResultsFrame.grid(row=rowCounter+1, column=3)
         warning = Label(checkResultsFrame, text=message)
@@ -114,7 +114,7 @@ def errorFrame(message):
         retryButton.grid(row=0, column=1)
 
 def tryAgain():
-    global rowCounter, textList, textPercentage, textVotes, hiddenRemains, allDataFromUser
+    global rowCounter, textList, textPercentage, textVotes, hiddenRemains, allDataFromUser, totalVotes, singleSeat
     
     for widget in root.winfo_children():
         widget.destroy()
@@ -125,8 +125,12 @@ def tryAgain():
     textVotes = []
     hiddenRemains = []
     allDataFromUser = []
-    columnNames()
-    newLine()
+    totalVotes = 0
+    singleSeat = 0
+    firstFrame = Frame(root)
+    firstFrame.grid(row=0, column=0)
+    columnNames(firstFrame)
+    newLine(firstFrame)
 
 
 def resultsFromData(average, amountList):
@@ -148,7 +152,7 @@ def showResults():
     localRowCounter = 2
 
     resultsFrame = Frame(root)
-    resultsFrame.grid(row=rowCounter+1, column=3)
+    resultsFrame.grid(row=rowCounter+1, column=0)
     
     totalVotesLabel = Label(resultsFrame, text=f"Voti totali: {int(totalVotes)}")
     totalVotesLabel.grid(row=0, column=0, sticky="W")
@@ -190,7 +194,9 @@ root = Tk()
 
 root.title("Analizzatore di voti")
 root.geometry("550x400")
-columnNames()
-newLine()
+firstFrame = Frame(root)
+firstFrame.grid(row=0, column=0)
+columnNames(firstFrame)
+newLine(firstFrame)
 
 root.mainloop()
