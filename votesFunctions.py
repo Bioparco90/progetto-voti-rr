@@ -9,6 +9,8 @@
 # 321 è il totale dei voti che stavamo cercando.
 
 def findTotalVotes(percentage, partyVotes):
+    # if percentage == 0:
+    #     percentage = 1
     return (100*partyVotes)/percentage
 
 # A questo punto possiamo ottenere i voti ricevuti da tutti gli altri partiti(1), 

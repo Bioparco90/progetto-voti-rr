@@ -1,28 +1,32 @@
 from tkinter import *
 from votesFunctions import *
 
-rowCounter = 2
+rowCounter = 1
 textList = []
 textPercentage = []
 textVotes = []
+hiddenRemains = []
 allDataFromUser = []
+totalVotes = 0
+singleSeat = 0
 
-def header():
-    welcomeFrame = Frame(root)
-    header = Label(welcomeFrame, text="Votes Analyzer", font="Helvetica 20 bold", pady=5)
-    welcomeFrame.grid(row=0, column=4)
-    header.grid(row=0, column=0)
+
+# def header():
+#     welcomeFrame = Frame(root)
+#     header = Label(welcomeFrame, text="Votes Analyzer", font="Helvetica 20 bold", pady=5)
+#     welcomeFrame.grid(row=0, column=3)
+#     header.grid(row=0, column=0, sticky="W")
 
 
 def columnNames():
-    listNameLabel = Label(root, text="List")
-    listNameLabel.grid(row=1, column=0)
+    listNameLabel = Label(root, text="Lista")
+    listNameLabel.grid(row=0, column=0)
 
     percentageLabel = Label(root, text="%")
-    percentageLabel.grid(row=1, column=1)
+    percentageLabel.grid(row=0, column=1)
 
-    votesLabel = Label(root, text="Votes")
-    votesLabel.grid(row=1, column=2)
+    votesLabel = Label(root, text="Voti")
+    votesLabel.grid(row=0, column=2)
 
 
 def newLine():
@@ -45,11 +49,13 @@ def newLine():
     textVotes[lastVotes].insert(0, "0")
     textVotes[lastVotes].grid(row=rowCounter, column=2, padx=5)
 
+    hiddenRemains.append(0)
+
     addButton = Button(root, text="+", command=lambda: addNewLine(addButton, submitButton))
-    addButton.grid(row=rowCounter, column=3)
+    addButton.grid(row=rowCounter, column=3, sticky="W")
     
-    submitButton = Button(root, text="Submit", command=lambda: submit(addButton, submitButton))
-    submitButton.grid(row=rowCounter+1, column=3)
+    submitButton = Button(root, text="Calcola", command=lambda: submit(addButton, submitButton))
+    submitButton.grid(row=rowCounter+1, column=3, sticky="W")
 
 
 def addNewLine(b, s):
@@ -63,36 +69,52 @@ def addNewLine(b, s):
 def submit(b, s):
     b.grid_forget()
     s.grid_forget()
-    check()
+
     global allDataFromUser
     for n in range(len(textList)):
-        allDataFromUser.append([textList[n].get(), float(textPercentage[n].get()), int(textVotes[n].get())])
+        allDataFromUser.append([textList[n].get(), float(textPercentage[n].get()), int(textVotes[n].get()), hiddenRemains[n]])
 
-    # print(allDataFromUser) #debug print
-    
-
-def check():
+    average = 0
+    amountList = 0
     totalPercentage = 0
     
     for n in textPercentage:
         totalPercentage += float(n.get())
+    
+    totalPercentage = int(totalPercentage)
+    print(totalPercentage)
 
-    warningMessage = f'Warning, the total percentage is {totalPercentage}, please check and'
+    for n in range(len(allDataFromUser)):
+        if allDataFromUser[n][2] > 0:
+            average += allDataFromUser[n][2]
+            amountList += 1
 
-    if totalPercentage != 100:
-        resultsFrame = Frame(root)
-        resultsFrame.grid(row=rowCounter+1, column=4)
-        warning = Label(resultsFrame, text=warningMessage)
+    if allDataFromUser[0][2] > 0 and totalPercentage == 100 and amountList > 0 and average > 0:
+        resultsFromData(average, amountList)
+        showResults()
+    else:
+        if allDataFromUser[0][2] == 0:
+            warningMessage = "Inserisci per primo il partito di cui conosci i voti e "
+            errorFrame(warningMessage)
+        elif totalPercentage != 100:
+            warningMessage = f'Attenzione, la percentuale totale è {totalPercentage}, controlla e '
+            errorFrame(warningMessage)
+        elif amountList == 0 or average == 0:
+            warningMessage = "Inserisci il totale dei voti di almeno un partito e"
+            errorFrame(warningMessage) 
+
+
+def errorFrame(message):
+        checkResultsFrame = Frame(root)
+        checkResultsFrame.grid(row=rowCounter+1, column=3)
+        warning = Label(checkResultsFrame, text=message)
         warning.grid(row=0, column=0)
         
-        retryButton = Button(resultsFrame, text="try again", command=lambda: tryAgain())
+        retryButton = Button(checkResultsFrame, text="riprova", command=lambda: tryAgain())
         retryButton.grid(row=0, column=1)
 
-    # print(totalPercentage) #debug print
-
-
 def tryAgain():
-    global rowCounter, textList, textPercentage, textVotes, allDataFromUser
+    global rowCounter, textList, textPercentage, textVotes, hiddenRemains, allDataFromUser
     
     for widget in root.winfo_children():
         widget.destroy()
@@ -101,21 +123,74 @@ def tryAgain():
     textList = []
     textPercentage = []
     textVotes = []
+    hiddenRemains = []
     allDataFromUser = []
-    header()
     columnNames()
     newLine()
 
 
+def resultsFromData(average, amountList):
+    global allDataFromUser, totalVotes, singleSeat
+
+    average /= amountList
+    totalVotes = findTotalVotes(allDataFromUser[0][1], average)
+    singleSeat = findSingleSeatVotes(totalVotes)
+    for n in range(len(allDataFromUser)):
+        partyVotes = findPartyVotes(allDataFromUser[n][1], totalVotes)
+        allDataFromUser[n][2] = partyVotes
+    for n in range(len(allDataFromUser)):
+        partyRemains = findPartyRemains(allDataFromUser[n][2], singleSeat)
+        allDataFromUser[n][3] = partyRemains
+
+    
+def showResults():
+    global rowCounter
+    localRowCounter = 2
+
+    resultsFrame = Frame(root)
+    resultsFrame.grid(row=rowCounter+1, column=3)
+    
+    totalVotesLabel = Label(resultsFrame, text=f"Voti totali: {int(totalVotes)}")
+    totalVotesLabel.grid(row=0, column=0, sticky="W")
+
+    singleSeatLabel = Label(resultsFrame, text=f"Voti per seggio: {int(singleSeat)}")
+    singleSeatLabel.grid(row=1, column=0, sticky="W")
+
+    listNameLabel = Label(resultsFrame, text="Lista")
+    listNameLabel.grid(row=localRowCounter, column=0, sticky="W")
+
+    percentageLabel = Label(resultsFrame, text="%")
+    percentageLabel.grid(row=localRowCounter, column=1, sticky="W", padx=5)
+
+    votesLabel = Label(resultsFrame, text="Voti")
+    votesLabel.grid(row=localRowCounter, column=2, sticky="W", padx=5)
+
+    remainsLabel = Label(resultsFrame, text="Resti")
+    remainsLabel.grid(row=localRowCounter, column=3, sticky="W", padx=5)
+
+    localRowCounter += 1
+    for n in range(len(allDataFromUser)):
+        name = allDataFromUser[n][0].capitalize()
+        percentage = allDataFromUser[n][1]
+        votes = int(allDataFromUser[n][2])
+        remains = int(allDataFromUser[n][3])
+        listName = Label(resultsFrame, text=name)
+        listName.grid(row=localRowCounter, column=0, sticky="W")
+        listPercentage = Label(resultsFrame, text=percentage)
+        listPercentage.grid(row=localRowCounter, column=1, sticky="W", padx=5)
+        listVotes = Label(resultsFrame, text=votes)
+        listVotes.grid(row=localRowCounter, column=2, sticky="W", padx=5)
+        listRemains = Label(resultsFrame, text=remains)
+        listRemains.grid(row=localRowCounter, column=3, sticky="W", padx=5)
+
+        localRowCounter += 1  
+
+
 root = Tk()
 
-root.title("Votes Analyzer RR")
-root.geometry("800x600+0+0")
-
-header()
+root.title("Analizzatore di voti")
+root.geometry("550x400")
 columnNames()
 newLine()
-# for n in textList:
-#     print(n.get())
 
 root.mainloop()
