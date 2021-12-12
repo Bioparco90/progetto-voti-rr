@@ -106,7 +106,7 @@ def submit(b, s, frame):
 
 def errorFrame(message, frame):
         checkResultsFrame = Frame(root)
-        checkResultsFrame.grid(row=rowCounter+1, column=3)
+        checkResultsFrame.grid(row=rowCounter+1, column=0)
         warning = Label(checkResultsFrame, text=message)
         warning.grid(row=0, column=0)
         
@@ -128,7 +128,7 @@ def tryAgain():
     totalVotes = 0
     singleSeat = 0
     firstFrame = Frame(root)
-    firstFrame.grid(row=0, column=0)
+    firstFrame.grid(row=0, column=0, pady=5, sticky="W")
     columnNames(firstFrame)
     newLine(firstFrame)
 
@@ -152,7 +152,7 @@ def showResults():
     localRowCounter = 2
 
     resultsFrame = Frame(root)
-    resultsFrame.grid(row=rowCounter+1, column=0)
+    resultsFrame.grid(row=rowCounter+1, column=0, sticky="W", pady=5)
     
     totalVotesLabel = Label(resultsFrame, text=f"Voti totali: {int(totalVotes)}")
     totalVotesLabel.grid(row=0, column=0, sticky="W")
@@ -193,9 +193,9 @@ def showResults():
 root = Tk()
 
 root.title("Analizzatore di voti")
-root.geometry("550x400")
+root.geometry("350x400")
 firstFrame = Frame(root)
-firstFrame.grid(row=0, column=0)
+firstFrame.grid(row=0, column=0, pady=5, sticky="W")
 columnNames(firstFrame)
 newLine(firstFrame)
 
