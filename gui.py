@@ -83,8 +83,7 @@ def submit(b, s, frame):
         totalPercentage += float(n.get())
     
     totalPercentage = int(totalPercentage)
-    print(totalPercentage)
-
+    
     for n in range(len(allDataFromUser)):
         if allDataFromUser[n][2] > 0:
             average += allDataFromUser[n][2]
@@ -197,6 +196,7 @@ def showResults():
 def reset(n):
     resetButton = Button(root, text="Reset", command=lambda: tryAgain())
     resetButton.grid(row=n, column=0)
+
 
 root = Tk()
 
