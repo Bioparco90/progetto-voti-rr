@@ -1,4 +1,5 @@
 from tkinter import *
+from typing import Counter
 from votesFunctions import *
 
 rowCounter = 1
@@ -91,7 +92,8 @@ def submit(b, s, frame):
 
     if allDataFromUser[0][2] > 0 and totalPercentage == 100 and amountList > 0 and average > 0:
         resultsFromData(average, amountList)
-        showResults()
+        innerCounter = showResults()
+        reset(innerCounter)
     else:
         if allDataFromUser[0][2] == 0:
             warningMessage = "Inserisci per primo il partito di cui conosci i voti e "
@@ -119,7 +121,7 @@ def tryAgain():
     for widget in root.winfo_children():
         widget.destroy()
     
-    rowCounter = 2
+    rowCounter = 1
     textList = []
     textPercentage = []
     textVotes = []
@@ -187,13 +189,19 @@ def showResults():
         listRemains = Label(resultsFrame, text=remains)
         listRemains.grid(row=localRowCounter, column=3, sticky="W", padx=5)
 
-        localRowCounter += 1  
+        localRowCounter += 1
 
+    return localRowCounter
+
+
+def reset(n):
+    resetButton = Button(root, text="Reset", command=lambda: tryAgain())
+    resetButton.grid(row=n, column=0)
 
 root = Tk()
 
 root.title("Analizzatore di voti")
-root.geometry("350x400")
+root.geometry("300x500")
 firstFrame = Frame(root)
 firstFrame.grid(row=0, column=0, pady=5, sticky="W")
 columnNames(firstFrame)
