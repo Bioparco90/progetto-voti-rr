@@ -1,6 +1,4 @@
 from tkinter import *
-from typing import Counter
-from votesFunctions import *
 
 rowCounter = 1
 textList = []
@@ -11,13 +9,19 @@ allDataFromUser = []
 totalVotes = 0
 singleSeat = 0
 
+def findTotalVotes(percentage, partyVotes):
+    return (100*partyVotes)/percentage
 
-# def header():
-#     welcomeFrame = Frame(root)
-#     header = Label(welcomeFrame, text="Votes Analyzer", font="Helvetica 20 bold", pady=5)
-#     welcomeFrame.grid(row=0, column=3)
-#     header.grid(row=0, column=0, sticky="W")
 
+def findPartyVotes(percentage, totVotes):
+    return (percentage*totVotes)/100
+
+
+def findSingleSeatVotes(totVotes):
+    return totVotes/12
+
+def findPartyRemains(partyVotes, singleSeatLimit):
+    return partyVotes % singleSeatLimit
 
 def columnNames(myFrame):
     listNameLabel = Label(myFrame, text="Lista")
