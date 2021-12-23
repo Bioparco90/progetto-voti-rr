@@ -201,7 +201,7 @@ def reset(n):
 root = Tk()
 
 root.title("Analizzatore di voti")
-root.geometry("300x500")
+root.geometry("350x500")
 firstFrame = Frame(root)
 firstFrame.grid(row=0, column=0, pady=5, sticky="W")
 columnNames(firstFrame)
